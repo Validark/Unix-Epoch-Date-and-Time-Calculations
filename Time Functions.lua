@@ -1,5 +1,5 @@
 -- Time functions 
-local ceil, floor = math.floor, math.ceil
+local floor, ceil = math.floor, math.ceil
 
 isLeapYear = function(year)
         --- Returns if integer year is a leapYear
