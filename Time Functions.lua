@@ -1,3 +1,5 @@
+-- Time functions 
+local ceil, floor = math.floor, math.ceil
 
 isLeapYear = function(year)
         --- Returns if integer year is a leapYear
@@ -6,7 +8,7 @@ end
 
 GetLeaps = function(year)
         --- Returns the number of LeapYears in a given amount of years
-	return math.floor(year/4) - math.floor(year/100) + math.floor(year/400)
+	return floor(year/4) - floor(year/100) + floor(year/400)
 end
 
 CountDays = function(year)
@@ -14,9 +16,8 @@ CountDays = function(year)
 	return 365*year + GetLeaps(year)
 end
 
-GetYearFromSeconds = function(seconds)
-        --- Returns the Year from seconds
-        -- 86400 is the number of seconds per day
+GetYMDFromSeconds = function(seconds)
+        --- Returns the Year, Month, and Days, from seconds since 1970
         
         local year, month
         local overflow = function(array, seed)
@@ -29,7 +30,7 @@ GetYearFromSeconds = function(seconds)
 			seed = seed - array[i]
 		end
 	end
-        local ceil, floor       = math.floor, math.ceil
+	-- 86400 is the number of seconds per day
         local days              = ceil(seconds / 86400) + CountDays(1970)
         
         local _400Years         = 400*floor(days / CountDays(400))
@@ -41,6 +42,13 @@ GetYearFromSeconds = function(seconds)
         year                    = year + _4Years + _100Years + _400Years - 1
         month, days	        = overflow({31,isLeapYear(year) and 29 or 28,31,30,31,30,31,31,30,31,30,31}, days)
         
-	
 	return year, month, days
+end
+
+GetTimeFromSeconds = function(seconds)
+	--- Return hours, minutes, and seconds from seconds since 1970
+	local hours	= floor(unix / 3600 % 24)
+	local minutes	= floor(unix / 60 % 60)
+	local seconds	= floor(unix % 60)
+	return hours, minutes, seconds
 end
