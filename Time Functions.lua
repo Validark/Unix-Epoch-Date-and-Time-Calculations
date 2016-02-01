@@ -19,7 +19,6 @@ end
 GetYMDFromSeconds = function(seconds)
         --- Returns the Year, Month, and Days, from seconds since 1970
         
-        local year, month
         local overflow = function(array, seed)
                 --- This subtracts seed from the values in array until an overflow
                 -- @return the index of the value it overflowed over and the remainder of seed
@@ -37,9 +36,14 @@ GetYMDFromSeconds = function(seconds)
         local _100Years         = 100*floor(days % CountDays(400) / CountDays(100))
         local _4Years           =   4*floor(days % CountDays(400) % CountDays(100) / CountDays(4))
         
+        local year, month
+        
         year, days              = overflow({366,365,365,365}, days - CountDays(_4Years + _100Years + _400Years)) -- [0-1461]
         -- days is number days into the year
+        
         year                    = year + _4Years + _100Years + _400Years - 1
+        -- We subtract 1 because overflow returns 1 if you are already in the correct year
+        
         month, days	        = overflow({31,isLeapYear(year) and 29 or 28,31,30,31,30,31,31,30,31,30,31}, days)
         
 	return year, month, days
