@@ -21,7 +21,7 @@ GetYMDFromSeconds = function(seconds)
         
         local year, month
         local overflow = function(array, seed)
-                --- This subtracts seed from the values in array and
+                --- This subtracts seed from the values in array until an overflow
                 -- @return the index of the value it overflowed over and the remainder of seed
 		for i = 1, #array do
 			if seed - array[i] <= 0 then
