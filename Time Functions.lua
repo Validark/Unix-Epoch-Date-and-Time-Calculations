@@ -16,6 +16,11 @@ CountDays = function(year)
 	return 365*year + GetLeaps(year)
 end
 
+CountDays2 = function(year)
+	--- Returns the number of days in a given number of years NOT including this year's leap year
+	return 365*year + GetLeaps(year - 1)	
+end
+
 GetYMDFromSeconds = function(seconds)
         --- Returns the Year, Month, and Days, from seconds since 1970
         
@@ -39,7 +44,7 @@ GetYMDFromSeconds = function(seconds)
         
         local _1Years, month
         
-        _1Years, days		= overflow({366,365,365,365}, days - CountDays(_4Years + _100Years + _400Years)) -- [0-1461]
+        _1Years, days		= overflow({366,365,365,365}, days - CountDays2(_4Years + _100Years + _400Years)) -- [0-1461]
         -- days is number days into the current year
         
 	_1Years			= _1Years - 1
