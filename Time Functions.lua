@@ -7,7 +7,7 @@ isLeapYear = function(year)
 end
 
 GetLeaps = function(year)
-        --- Returns the number of LeapYears in a given amount of years
+        --- Returns the number of Leap days in a given amount of years
 	return floor(year/4) - floor(year/100) + floor(year/400)
 end
 
@@ -32,17 +32,21 @@ GetYMDFromSeconds = function(seconds)
 	-- 86400 is the number of seconds per day
         local days              = ceil(seconds / 86400) + CountDays(1970)
         
+        -- Each of the following caculations gets the next bracket of years we are in
         local _400Years         = 400*floor(days / CountDays(400))
         local _100Years         = 100*floor(days % CountDays(400) / CountDays(100))
         local _4Years           =   4*floor(days % CountDays(400) % CountDays(100) / CountDays(4))
         
-        local year, month
+        local _1Years, month
         
-        year, days              = overflow({366,365,365,365}, days - CountDays(_4Years + _100Years + _400Years)) -- [0-1461]
-        -- days is number days into the year
+        _1Years, days		= overflow({366,365,365,365}, days - CountDays(_4Years + _100Years + _400Years)) -- [0-1461]
+        -- days is number days into the current year
         
-        year                    = year + _4Years + _100Years + _400Years - 1
-        -- We subtract 1 because overflow returns 1 if you are already in the correct year
+	_1Years			= _1Years - 1
+        -- We subtract 1 because function overflow returns 1 if you are already in the correct year
+        
+        local year		= _1Years + _4Years + _100Years + _400Years
+        
         
         month, days	        = overflow({31,isLeapYear(year) and 29 or 28,31,30,31,30,31,31,30,31,30,31}, days)
         
@@ -54,5 +58,6 @@ GetTimeFromSeconds = function(seconds)
 	local hours	= floor(seconds / 3600 % 24)
 	local minutes	= floor(seconds / 60 % 60)
 	local seconds	= floor(seconds % 60)
+	
 	return hours, minutes, seconds
 end
