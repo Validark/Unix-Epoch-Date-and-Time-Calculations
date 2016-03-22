@@ -1,4 +1,6 @@
--- Time functions 
+-- Time functions
+-- @author Narrev
+
 local floor, ceil = math.floor, math.ceil
 
 isLeapYear = function(year)
