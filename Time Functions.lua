@@ -3,27 +3,27 @@
 
 local floor, ceil = math.floor, math.ceil
 
-isLeapYear = function(year)
+local function isLeapYear(year)
         --- Returns if integer year is a leapYear
         return year % 4 == 0 and (year % 25 ~= 0 or year % 16 == 0)
 end
 
-GetLeaps = function(year)
+local function GetLeaps(year)
         --- Returns the number of Leap days in a given amount of years
 	return floor(year/4) - floor(year/100) + floor(year/400)
 end
 
-CountDays = function(year)
+local function CountDays(year)
         --- Returns the number of days in a given number of years
 	return 365*year + GetLeaps(year)
 end
 
-CountDays2 = function(year)
+local function CountDays2(year)
 	--- Returns the number of days in a given number of years NOT including this year's leap year
 	return 365*year + GetLeaps(year - 1)	
 end
 
-local overflow = function(array, seed)
+local function overflow(array, seed)
         --- Subtracts the integer values in an array from a seed until the seed cannot be subtracted from any further (aka "overflow")
 	-- @param array array A table filled with integers to be subtracted from seed
 	-- @param integer seed A seed that is subtracted by the values in array until it would become negative from subtraction
@@ -37,7 +37,7 @@ local overflow = function(array, seed)
 	end
 end
 
-GetYMDFromSeconds = function(seconds)
+local function GetYMDFromSeconds(seconds)
         --- Returns the Year, Month, and Days, from seconds since 1970
         -- @param number seconds The amount of seconds since January 1st, 1970
         
@@ -74,7 +74,7 @@ GetYMDFromSeconds = function(seconds)
 	return year, month, days
 end
 
-GetTimeFromSeconds = function(seconds)
+local function GetTimeFromSeconds(seconds)
 	--- Return hours, minutes, and seconds from seconds since 1970
 	local hours	= floor(seconds / 3600 % 24)
 	local minutes	= floor(seconds / 60 % 60)
