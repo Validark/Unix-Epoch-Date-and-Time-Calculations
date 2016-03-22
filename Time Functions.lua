@@ -50,6 +50,10 @@ local function GetYMDFromSeconds(seconds)
 	-- which will not be rounded up by ceil (because it is an integer).
 	-- In other words, if it is 12:00am, we need to go to the next day
 	
+	-- We could also do:
+	--			  floor(seconds / 86400) + CountDays(1970) + 1
+	-- Doesn't matter which way you do it. But one of them should help you understand what is happening to the numbers.
+	
         local days              = ceil((seconds + 1) / 86400) + CountDays(1970)
         
         -- Each of the following caculations gets the next bracket of years we are in
