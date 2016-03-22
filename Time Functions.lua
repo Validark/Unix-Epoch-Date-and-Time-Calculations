@@ -6,6 +6,9 @@ local floor, ceil = math.floor, math.ceil
 local function isLeapYear(year)
         --- Returns if integer year is a leapYear
         return year % 4 == 0 and (year % 25 ~= 0 or year % 16 == 0)
+        
+        -- The numbers above are basically a factored version of the numbers below (prime factorize them)
+        -- year % 4 == 0 and (year % 100 ~= 0 or year % 400 == 0)
 end
 
 local function GetLeaps(year)
