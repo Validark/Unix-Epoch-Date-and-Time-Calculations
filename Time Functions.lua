@@ -35,7 +35,10 @@ GetYMDFromSeconds = function(seconds)
 		end
 	end
 	-- 86400 is the number of seconds per day
-        local days              = ceil(seconds / 86400) + CountDays(1970)
+	-- We add 1 second below because when dividing by 86400, any multiple of 86400 will return an integer
+	-- which will not be rounded up by ceil (because it is an integer).
+	-- In other words, if it is 12:00am, we need to go to the next day
+        local days              = ceil((seconds + 1) / 86400) + CountDays(1970)
         
         -- Each of the following caculations gets the next bracket of years we are in
         local _400Years         = 400*floor(days / CountDays(400))
