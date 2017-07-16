@@ -1,21 +1,22 @@
 -- Efficient time functions
 -- @author Narrev
 
-local ceil = math.ceil
 local floor = math.floor
-local format = string.format
 
+-- The numbers used in the following function are a factored version
+-- of the numbers directly below (prime factorize them)
+-- Year % 4 == 0 and (Year % 100 ~= 0 or Year % 400 == 0)
 local function IsLeapYear(Year)
-        --- Returns if integer Year is a leapyear
-        return Year % 4 == 0 and (Year % 25 ~= 0 or Year % 16 == 0)
-        
-        -- The numbers above are basically a factored version of the numbers below (prime factorize them)
-        -- Year % 4 == 0 and (Year % 100 ~= 0 or Year % 400 == 0)
+	return Year % 4 == 0 and (Year % 25 ~= 0 or Year % 16 == 0)
 end
 
 local function SecondsToStamp(Seconds)
-    -- Converts 65 seconds to 01:05, and so on
-    return format("%d:%02d", Seconds / 60, Seconds % 60)
+    -- Converts seconds to microwave time
+	-- Example: 65 seconds to 1:05
+    return ("%d:%02d"):format(
+		Seconds / 60, -- Minutes
+		Seconds % 60  -- Seconds
+	)
 end
 
 local function GetTimeFromSeconds(Seconds)
@@ -28,13 +29,13 @@ local function GetTimeFromSeconds(Seconds)
 end
 
 local function GetYMDFromSeconds(Seconds)
-	--- Most efficient calculations for finding Year, month, and days.
+	--- Most efficient calculations for finding Year, month, and days
+	-- @param number seconds The amount of seconds since January 1st, 1970
 	-- @returns the Year, Month, and Days, from seconds since 1970
-        -- @param number seconds The amount of seconds since January 1st, 1970
 	-- Taken from http://howardhinnant.github.io/date_algorithms.html#weekday_from_days
 	
 	local Days = floor(Seconds / 86400) + 719468
-	local wday = (Days + 3) % 7 -- Here is a weekday if you want :D
+	local Weekday = (Days + 3) % 7 -- Here is a weekday if you want :D
 	local Year = floor((Days >= 0 and Days or Days - 146096) / 146097) -- 400 Year bracket
 	Days = (Days - Year * 146097) -- Days into 400 Year bracket [0, 146096]
 	local Years = floor((Days - floor(Days/1460) + floor(Days/36524) - floor(Days/146096))/365)	-- Years into 400 Year bracket[0, 399]
