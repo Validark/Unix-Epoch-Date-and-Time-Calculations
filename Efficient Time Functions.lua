@@ -1,5 +1,5 @@
 -- Efficient time functions
--- @author Narrev
+-- @author Validark
 
 local floor = math.floor
 
@@ -32,7 +32,7 @@ local function GetYMDFromSeconds(Seconds)
 	--- Most efficient calculations for finding Year, month, and days
 	-- @param number seconds The amount of seconds since January 1st, 1970
 	-- @returns the Year, Month, and Days, from seconds since 1970
-	-- Taken from http://howardhinnant.github.io/date_algorithms.html#weekday_from_days
+	-- Math from http://howardhinnant.github.io/date_algorithms.html#weekday_from_days
 	
 	local Days = floor(Seconds / 86400) + 719468
 	local Weekday = (Days + 3) % 7 -- Here is a weekday if you want :D
