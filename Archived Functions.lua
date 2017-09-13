@@ -1,6 +1,6 @@
--- @author Narrev
+-- @author Validark
 -- Nice to look at for study, I guess
--- Discovered by Narrev before I learned about calculus
+-- Discovered before I learned about calculus
 
 local function GetLeaps(year)
 	--- Returns the number of Leap days in a given amount of years
