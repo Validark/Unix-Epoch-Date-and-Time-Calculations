@@ -2,6 +2,12 @@
 -- Nice to look at for study, I guess
 -- Discovered before I learned about calculus
 
+local floor = math.floor
+
+local function isLeapYear(year)
+	return year % 4 == 0 and (year % 25 ~= 0 or year % 16 == 0)
+end
+
 local function GetLeaps(year)
 	--- Returns the number of Leap days in a given amount of years
 	return floor(year/4) - floor(year/100) + floor(year/400)
