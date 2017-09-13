@@ -48,10 +48,10 @@ local function GetYMDFromSeconds(seconds) -- Archived (not as efficient)
 	-- In other words, if it is 12:00am, we need to go to the next day
 	
 	-- We could also do:
-	--			  floor(seconds / 86400) + CountDays(1970) + 1
+	--			  ceil((seconds + 1) / 86400) + CountDays(1970)
 	-- Doesn't matter which way you do it. But one of them should help you understand what is happening to the numbers.
 	
-	local days = ceil((seconds + 1) / 86400) + CountDays(1970)
+	local days = floor(seconds / 86400) + CountDays(1970) + 1
 	
 	-- Each of the following caculations gets the next bracket of years we are in
 	-- It's similar to converting from base x to base 10, except the number's places are worth 400, 100, 4, 1
