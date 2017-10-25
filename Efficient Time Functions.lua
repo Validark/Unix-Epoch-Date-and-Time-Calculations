@@ -10,6 +10,19 @@ local function IsLeapYear(Year)
 	return Year % 4 == 0 and (Year % 25 ~= 0 or Year % 16 == 0)
 end
 
+local function GetMonthLength(Month, Year)
+	-- @param int month [1, 12]
+	-- @param int Year
+	-- @returns int MonthLength
+
+	if Month == 2 then
+		return Year and IsLeapYear(Year) and 29 or 28
+	else
+		local MonthLength = (Month < 3 and Month + 10 or Month - 2)*30.6
+		return 30.6 + (MonthLength - 30.2) % 1 - (MonthLength + 0.4) % 1
+	end
+end
+
 local function SecondsToStamp(Seconds)
     -- Converts seconds to microwave time
 	-- Example: 65 seconds to 1:05
@@ -39,9 +52,9 @@ local function GetYMDFromSeconds(Seconds)
 	local Year = floor((Days >= 0 and Days or Days - 146096) / 146097) -- 400 Year bracket
 	Days = (Days - Year * 146097) -- Days into 400 Year bracket [0, 146096]
 	local Years = floor((Days - floor(Days/1460) + floor(Days/36524) - floor(Days/146096))/365)	-- Years into 400 Year bracket[0, 399]
-	Days = Days - (365*Years + floor(Years/4) - floor(Years/100))			-- Days into Year (March 1st is first day) [0, 365]
+	Days = Days - (365*Years + floor(Years*0.25) - floor(Years*0.01))			-- Days into Year (March 1st is first day) [0, 365]
 	local Month = floor((5*Days + 2)/153) -- Month of Year (March is month 0) [0, 11]
-	Days = Days - floor((153*Month + 2)/5) + 1 -- Days into month [1, 31]
+	Days = Days - floor((153*Month + 2)*0.2) + 1 -- Days into month [1, 31]
 	Month = Month + (Month < 10 and 3 or -9) -- Real life month [1, 12]
 	Year = Years + Year*400 + (Month < 3 and 1 or 0) -- Actual Year (Shift 1st month from March to January)
 	
