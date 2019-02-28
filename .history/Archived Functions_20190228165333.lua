@@ -44,11 +44,10 @@ local function overflow(array, seed)
 	-- @returns index at which the iterated value is greater than the remaining seed and remainder of seed (before subtracting final value)
 
 	for i = 1, #array do
-		local nextSeed = seed - array[i]
-		if nextSeed <= 0 then
+		if seed - array[i] <= 0 then
 			return i, seed
 		end
-		seed = nextSeed
+		seed = seed - array[i]
 	end
 end
 

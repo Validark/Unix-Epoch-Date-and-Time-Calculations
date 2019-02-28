@@ -13,8 +13,7 @@ end
 local function SecondsToStamp(Seconds)
     -- Converts seconds to microwave time
 	-- Example: 65 seconds to 1:05
-	-- @param Seconds
-	-- @returns Minutes:Seconds
+	-- @param Seconds [0, ]
 
     return ("%d:%02d"):format(
 		Seconds / 60, -- Minutes
@@ -49,18 +48,8 @@ local function GetYMDFromSeconds(Seconds)
 	-- Math from http://howardhinnant.github.io/date_algorithms.html#weekday_from_days
 
 	local Days = floor(Seconds / SECONDS_PER_DAY) + 719468
-
---	Here is a weekday if you want :D
---	local Weekday = 1 + (Days + 3) % 7
-
-	local Year
-
-	if Days >= 0 then
-        Year = Days
-    else
-        Year = Days - 146096
-	end
-
+	local Weekday = 1 + (Days + 3) % 7 -- Here is a weekday if you want :D
+	local Year = Days >= 0 and Days or Days - 146096
 	Days = Year % 146097 -- Days into 400 Year bracket [0, 146096]
 	Year = (Year - Days) / 146097 -- 400 Year bracket
 	local Years = Days - ((Days - Days % 1460) / 1460) + ((Days - Days % 36524) / 36524) - ((Days - Days % 146096) / 146096)
@@ -70,22 +59,8 @@ local function GetYMDFromSeconds(Seconds)
 	Month = (Month - Month % 153) / 153 -- Month of Year (March is month 0) [0, 11]
 	local x = 153 * Month + 2
 	Days = Days - (x - x % 5) * 0.2 + 1 -- Days into month [1, 31]
-
-	if Month < 10 then
-		Month = Month + 3 -- Real life month [1, 12]
-	else
-		Month = Month - 9 -- Real life month [1, 12]
-	end
-
-	local YearOffset
-
-	if Month < 3 then
-		YearOffset = 1
-	else
-		YearOffset = 0
-	end
-
-	Year = Years + Year * 400 + YearOffset -- Actual Year (Shift 1st month from March to January)
+	Month = Month + (Month < 10 and 3 or -9) -- Real life month [1, 12]
+	Year = Years + Year * 400 + (Month < 3 and 1 or 0) -- Actual Year (Shift 1st month from March to January)
 
 	return Year, Month, Days
 end
